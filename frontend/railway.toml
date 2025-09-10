@@ -1,0 +1,14 @@
+[build]
+  builder = "nixpacks"
+  buildCommand = "npm install && npm run build"
+
+[deploy]
+  startCommand = "npx serve -s dist -l $PORT"
+  healthcheckPath = "/"
+  healthcheckTimeout = 100
+  restartPolicyType = "on_failure"
+  restartPolicyMaxRetries = 5
+
+[variables]
+  VITE_API_BASE_URL = "${{Backend.RAILWAY_PUBLIC_DOMAIN}}"
+  NODE_ENV = "production"

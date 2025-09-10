@@ -1,0 +1,17 @@
+[build]
+  builder = "nixpacks"
+  buildCommand = "pip install -r requirements.txt"
+
+[deploy]
+  startCommand = "alembic upgrade head && python -m uvicorn app.main:app --host 0.0.0.0 --port $PORT"
+  healthcheckPath = "/"
+  healthcheckTimeout = 100
+  restartPolicyType = "on_failure"
+  restartPolicyMaxRetries = 10
+
+[variables]
+  PYTHONPATH = "/app"
+  
+# Railway-specific environment optimizations
+[env]
+  ENVIRONMENT = "production"

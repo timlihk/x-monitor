@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from typing import List
 import uvicorn
 
-from app.database import SessionLocal, engine, get_db, Base
+from app.database import SessionLocal, engine, get_db, Base, test_database_connection
 from app import crud, schemas
 from app.services.twitter_service import TwitterService
 from app.services.llm_service import LLMService
@@ -28,6 +28,10 @@ scheduler_service = SchedulerService()
 
 @app.on_event("startup")
 async def startup_event():
+    # Test database connection
+    if not test_database_connection():
+        raise RuntimeError("Database connection failed on startup")
+    
     scheduler_service.start()
 
 @app.on_event("shutdown")
@@ -37,6 +41,23 @@ async def shutdown_event():
 @app.get("/")
 def read_root():
     return {"message": "X Monitor API is running"}
+
+@app.get("/health")
+def health_check():
+    """Health check endpoint for deployment monitoring."""
+    try:
+        db_ok = test_database_connection()
+        return {
+            "status": "healthy" if db_ok else "unhealthy",
+            "database": "connected" if db_ok else "disconnected",
+            "version": "1.0.0"
+        }
+    except Exception as e:
+        return {
+            "status": "unhealthy",
+            "error": str(e),
+            "version": "1.0.0"
+        }
 
 @app.get("/api/terms", response_model=List[schemas.MonitoredTerm])
 def get_terms(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
