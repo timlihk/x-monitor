@@ -30,17 +30,20 @@ class LLMService:
         
         tweets_text = "\n\n".join(tweet_texts[:20])
         
-        prompt = f"""Analyze the following tweets about "{keyword}" and provide a summary with:
+        prompt = f"""Summarize the following tweets about "{keyword}" into:
+1. Main themes / repeated ideas
+2. Positive sentiment (if any)
+3. Negative sentiment (if any)
+4. Notable quotes or insights
 
-1. Main themes (2-3 key topics)
-2. Positive sentiment highlights
-3. Negative sentiment highlights  
-4. Notable insights or trends
+Return a concise summary (5–10 bullet points).
+
+Use bullet points (•) for each item within sections.
 
 Tweets:
 {tweets_text}
 
-Please provide a concise but informative summary."""
+Format your response with clear section headers and bullet points."""
 
         try:
             if self.use_openai:
@@ -55,7 +58,7 @@ Please provide a concise but informative summary."""
         response = await openai.ChatCompletion.acreate(
             model="gpt-3.5-turbo",
             messages=[
-                {"role": "system", "content": "You are a helpful assistant that analyzes social media content and provides structured summaries."},
+                {"role": "system", "content": "You are a helpful assistant that analyzes social media content and provides structured summaries using bullet points. Always format your responses with clear section headers and bullet points (•) for easy reading."},
                 {"role": "user", "content": prompt}
             ],
             max_tokens=500,
