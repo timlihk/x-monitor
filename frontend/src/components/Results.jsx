@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { ExternalLink, Calendar, MessageSquare } from 'lucide-react'
+import { ExternalLink, Calendar, MessageSquare, Code } from 'lucide-react'
 import { resultsApi } from '../services/api'
 import LoadingSpinner from './LoadingSpinner'
 
@@ -7,6 +7,7 @@ const Results = () => {
   const [results, setResults] = useState([])
   const [loading, setLoading] = useState(true)
   const [selectedResult, setSelectedResult] = useState(null)
+  const [showRawJson, setShowRawJson] = useState({})
 
   useEffect(() => {
     loadResults()
@@ -48,6 +49,13 @@ const Results = () => {
       .slice(0, 5)
   }
 
+  const toggleRawJson = (resultId) => {
+    setShowRawJson(prev => ({
+      ...prev,
+      [resultId]: !prev[resultId]
+    }))
+  }
+
   if (loading) {
     return <LoadingSpinner />
   }
@@ -75,9 +83,21 @@ const Results = () => {
                 <h3 className="text-lg font-medium text-gray-900">
                   {result.monitored_term?.keyword || 'Unknown Term'}
                 </h3>
-                <div className="flex items-center text-sm text-gray-500">
-                  <Calendar className="h-4 w-4 mr-1" />
-                  {new Date(result.created_at).toLocaleDateString()}
+                <div className="flex items-center space-x-4">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      toggleRawJson(result.id)
+                    }}
+                    className="text-gray-500 hover:text-gray-700"
+                    title="Toggle Raw JSON"
+                  >
+                    <Code className="h-4 w-4" />
+                  </button>
+                  <div className="flex items-center text-sm text-gray-500">
+                    <Calendar className="h-4 w-4 mr-1" />
+                    {new Date(result.created_at).toLocaleDateString()}
+                  </div>
                 </div>
               </div>
               
@@ -141,6 +161,23 @@ const Results = () => {
                       </div>
                     )}
                   </>
+                )}
+                
+                {showRawJson[result.id] && (
+                  <div className="mt-6">
+                    <h4 className="text-sm font-medium text-gray-900 mb-3 flex items-center">
+                      <Code className="h-4 w-4 mr-2" />
+                      Raw JSON Data
+                    </h4>
+                    <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
+                      <pre className="text-sm text-green-400 font-mono whitespace-pre-wrap">
+                        {JSON.stringify(result, null, 2)}
+                      </pre>
+                    </div>
+                    <div className="mt-2 text-xs text-gray-500 text-center">
+                      Complete result object including raw tweets data and metadata
+                    </div>
+                  </div>
                 )}
               </div>
               
