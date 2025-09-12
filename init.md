@@ -24,7 +24,7 @@ The app should run on a daily schedule, summarize tweets with an LLM, and presen
 - **Scheduler:** APScheduler (in backend) or cron job  
 - **Integrations:**  
   - X API v2 (`search_recent_tweets`)  
-  - OpenAI/Claude API for summarization  
+  - DeepSeek v3.1 API for summarization  
 
 ---
 
@@ -98,6 +98,10 @@ The app should run on a daily schedule, summarize tweets with an LLM, and presen
   X_API_KEY=xxxx
   X_API_SECRET=xxxx
   X_BEARER_TOKEN=xxxx
+  X_ACCESS_TOKEN=xxxx
+  X_ACCESS_TOKEN_SECRET=xxxx
+  DEEPSEEK_API_KEY=xxxx
+  DEEPSEEK_MODEL=deepseek-chat
   DB_URL=sqlite:///local.db   # for dev
   ```
 - In Railway, update `DB_URL` with the Postgres connection string.  

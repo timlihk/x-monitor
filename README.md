@@ -7,7 +7,7 @@ A lightweight personal web app to track keywords, tickers, and hashtags on X.com
 - ✅ Monitor keywords/hashtags/tickers (e.g., `$ORCL`, `#AI`)
 - ✅ Toggle: restrict results only to accounts you follow
 - ✅ Daily scheduled fetch from X API
-- ✅ Summarize results with OpenAI/Claude
+- ✅ Summarize results with DeepSeek v3.1
 - ✅ Web dashboard to view latest summaries + top tweets
 - ✅ REST API for configuration and results
 - ✅ SQLite for local dev, ready for Postgres in production
@@ -18,7 +18,7 @@ A lightweight personal web app to track keywords, tickers, and hashtags on X.com
 - **Frontend:** React + Vite + Tailwind CSS
 - **Database:** SQLite (dev), Postgres (prod)
 - **Scheduler:** APScheduler
-- **Integrations:** X API v2, OpenAI/Claude API
+- **Integrations:** X API v2, DeepSeek v3.1 API
 
 ## Setup
 
@@ -47,16 +47,14 @@ X_ACCESS_TOKEN=your_access_token
 X_ACCESS_TOKEN_SECRET=your_access_token_secret
 ```
 
-### 3. Configure LLM API
+### 3. Configure DeepSeek API
 
-Add either OpenAI or Anthropic API key:
+Add your DeepSeek API key from [platform.deepseek.com](https://platform.deepseek.com):
 
 ```env
-# Option 1: OpenAI
-OPENAI_API_KEY=your_openai_key
-
-# Option 2: Anthropic Claude
-ANTHROPIC_API_KEY=your_anthropic_key
+# DeepSeek v3.1 API
+DEEPSEEK_API_KEY=your_deepseek_api_key
+DEEPSEEK_MODEL=deepseek-chat  # or "deepseek-reasoner" for thinking mode
 ```
 
 ### 4. Initialize Database
@@ -181,9 +179,9 @@ X_BEARER_TOKEN=your_x_bearer_token
 X_ACCESS_TOKEN=your_x_access_token
 X_ACCESS_TOKEN_SECRET=your_x_access_token_secret
 
-# LLM API (choose one)
-OPENAI_API_KEY=your_openai_key
-ANTHROPIC_API_KEY=your_anthropic_key
+# DeepSeek v3.1 API
+DEEPSEEK_API_KEY=your_deepseek_key
+DEEPSEEK_MODEL=deepseek-chat
 
 # Optional: Scheduler settings
 SCHEDULER_TIMEZONE=UTC
@@ -295,9 +293,9 @@ X_BEARER_TOKEN=your_bearer_token
 X_ACCESS_TOKEN=your_access_token
 X_ACCESS_TOKEN_SECRET=your_access_token_secret
 
-# LLM API (Choose one)
-OPENAI_API_KEY=sk-your-openai-key
-ANTHROPIC_API_KEY=sk-ant-your-anthropic-key
+# DeepSeek v3.1 API
+DEEPSEEK_API_KEY=sk-your-deepseek-key
+DEEPSEEK_MODEL=deepseek-chat
 ```
 
 #### Optional Configuration
