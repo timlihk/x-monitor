@@ -10,8 +10,8 @@ class Config:
     X_ACCESS_TOKEN = os.getenv("X_ACCESS_TOKEN")
     X_ACCESS_TOKEN_SECRET = os.getenv("X_ACCESS_TOKEN_SECRET")
     
-    OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-    ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY")
+    DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY")
+    DEEPSEEK_MODEL = os.getenv("DEEPSEEK_MODEL", "deepseek-chat")  # or "deepseek-reasoner"
     
     DB_URL = os.getenv("DB_URL", "sqlite:///./local.db")
     
